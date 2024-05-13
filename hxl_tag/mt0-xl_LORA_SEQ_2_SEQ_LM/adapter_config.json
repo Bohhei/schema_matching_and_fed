@@ -1,0 +1,16 @@
+{
+  "base_model_name_or_path": "bigscience/mt0-xl",
+  "bias": "none",
+  "fan_in_fan_out": false,
+  "inference_mode": true,
+  "lora_alpha": 32,
+  "lora_dropout": 0.1,
+  "modules_to_save": null,
+  "peft_type": "LORA",
+  "r": 8,
+  "target_modules": [
+    "q",
+    "v"
+  ],
+  "task_type": "SEQ_2_SEQ_LM"
+}

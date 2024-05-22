@@ -1,16 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun May 12 20:00:23 2024
-
-@author: shepe
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 16:07:14 2024
-
-@author: shepe
-"""
 
 from layers.dynamic_rnn import DynamicLSTM
 import torch

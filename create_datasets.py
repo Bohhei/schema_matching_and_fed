@@ -166,32 +166,42 @@ def get_features_2(column1, column2):
     column1 = column1.tolist()
     column2 = column2.tolist()
     
-    features = [0]
+    len_1 = len(column1)
+    len_2 = len(column2)
+    min_len = min(len_1,len_2)
+    column1 = column1[:min_len]
+    column2 = column2[:min_len]
+    
+    features = [0,0,0,0]
     
     if type_1=='object' and type_2=='object':
         
         #Jaccard 
-        sim_1 = jaccard_score(column1,column2)
+        #sim_1 = jaccard_score(column1,column2)
         #Levenshtein
-        sim_2 = textdistance.levenshtein.normalized_similarity(column1,column2)
+        #print('Levenshtein')
+        #sim_2 = textdistance.levenshtein.normalized_similarity(column1,column2)
         #Hamming
+        print('Hamming')
         sim_3 = textdistance.hamming.normalized_similarity(column1,column2)
         #Jaro-Winkler
+        print('Jaro-Winkler')
         sim_4 = textdistance.jaro_winkler.normalized_similarity(column1,column2)
         #Cosine similarity
+        print('Cosine similarity')
         sim_5 = textdistance.cosine.normalized_similarity(column1,column2)
-        features = [sim_1,sim_2,sim_3,sim_4,sim_5,0]
+        features = [sim_3,sim_4,sim_5,0]
         
     elif type_1!='object' and type_2!='object':
         corr = np.corrcoef(column1,column2)[0][1]
-        features = [0,0,0,0,0,corr]
+        features = [0,0,0,corr]
     else:
         pass
     
     return features
 
 
-def get_data_f(df1,df2,ground_t1, hxl_tags, data_name1='',data_name2=''):
+def get_data_f(df1,df2,ground_t1, hxl_tags, data_name1='',data_name2='',with_f_2=True):
     f1 = get_features(df1)
     f2 = get_features(df2)
     table1_hxl_tags = hxl_tags[0]
@@ -216,15 +226,16 @@ def get_data_f(df1,df2,ground_t1, hxl_tags, data_name1='',data_name2=''):
                 res=0
             
             hxl_tags_features = get_hxl_tags_features(tag1, tag2)
-            
-            #features_2 = get_features_2(df1[attr1], df2[attr2]) 
-            
-            data.append([data_name1, data_name2, attr1+tag1['full'],attr2+tag2['full'],res,f1_+f2_+hxl_tags_features])
+            if with_f_2:
+                features_2 = get_features_2(df1[attr1], df2[attr2]) 
+                
+                data.append([data_name1, data_name2, attr1,attr2,res,f1_+f2_+hxl_tags_features+features_2])
+            else:
+                data.append([data_name1, data_name2, attr1,attr2,res,f1_+f2_+hxl_tags_features])
     return data
 
 
-def create_train_data_f(names,hxl_tags, number=''):
-    
+def create_train_data_f(names,hxl_tags,number):
     data=[]
     i=0
     for name in names:
@@ -238,11 +249,11 @@ def create_train_data_f(names,hxl_tags, number=''):
         ground_t1 = df_and_ground[4]
 
         data_train = get_data_f(df1,df2,ground_t1, hxl_tags[i], data_name1=data_name1,data_name2=data_name2)
-        data+=data_train
+        data.append(data_train)
         i+=1
     df_data= pd.DataFrame(data,columns = ['dataset1_name','dataset2_name', 'attr1_name', 'attr2_name', 'attribute_match', 'features'] )
-    df_data.to_pickle('./datasets/with_feature_extraction/train_tpc{}.p'.format(number))
-    return df_data
+    df_data.to_pickle('./datasets/with_feature_extraction_2/train_tpc{}.p'.format(number))
+    return data
 
 def create_2():
     with open('names.p', 'rb') as file:

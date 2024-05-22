@@ -9,7 +9,7 @@ from tokenizers import SentencePieceBPETokenizer
 vocab = "./datasets/vocab.json"
 merges = "./datasets/merges.txt"
 
-PICKLE_DATASETS = ['num','num2','nom','nom2', 'tpc', 'tpc_2', 'tpc_3', 'mix','tpc_f','tpc_c1']
+PICKLE_DATASETS = ['num','num2','nom','nom2', 'tpc', 'tpc_2', 'tpc_3', 'mix','tpc_f','tpc_c1','tpc_full','tpc_full_2','tpc_f_2']
 
 
 def build_tokenizer(fnames, max_seq_len, dat_fname):

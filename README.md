@@ -3,7 +3,9 @@
 Schema matching and federated learning.
 
 For federated learning: train/train_fed.py
+
 For centralized learning: train/train.py
+
 All test results are saved in test/test_result.ipynb
 
 Datasets:
